@@ -296,3 +296,7 @@ table tbody tr:hover {
     flex-direction: column-reverse;
   }
 }
+
+#shared-data-plot {
+  text-align: center;
+}

@@ -14,7 +14,11 @@
   "browserslist": "last 1 Chrome version",
   "dependencies": {
     "@libp2p/websockets": "^3.0.3",
+    "debug": "^4.3.4",
+    "events": "^3.3.0",
     "ipfs-core": "^0.16.0",
+    "ipfs-locations": "^1.0.4",
+    "ipfs-stats": "^1.2.4",
     "it-all": "^1.0.4",
     "uint8arrays": "^3.0.0"
   },

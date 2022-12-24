@@ -4,10 +4,14 @@ import { create } from 'ipfs-core'
 import { WebSockets } from '@libp2p/websockets'
 import * as filters from '@libp2p/websockets/filters'
 
+
 import all from 'it-all'
 import { concat as uint8ArrayConcat } from 'uint8arrays/concat'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
+
+import StatsPoller from './ipfs-stats'
+
 
 // Node
 const $nodeId = document.querySelector('.node-id')
@@ -35,6 +39,25 @@ const $allDisabledElements = document.querySelectorAll('.disabled')
 const $workspaceInput = document.querySelector('#workspace-input')
 const $workspaceBtn = document.querySelector('#workspace-btn')
 
+// Shared data
+const sharedDataPlot = document.querySelector('#shared-data-plot')
+
+// const StatsPoller = require('ipfs-stats')
+
+// in kilobytes (1kb = 1024 bytes) measure the size of the data shared by this info.id
+const collectSharedData = async () => {
+  const data = await all(node.stats.bw())
+  const sharedData = data.reduce((acc, curr) => {
+    return BigInt(acc) + curr.totalOut
+  }
+  , 0)
+
+  sharedDataPlot.innerHTML = (Number(sharedData) / 1024).toFixed(3) + ' kb'
+
+  return sharedData
+}
+
+
 let FILES = []
 let workspace = (location.hash || 'default-workspace').replace(/^#/, '')
 
@@ -58,7 +81,7 @@ async function start () {
             // This is a public webrtc-star server
             '/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star',
             '/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star',
-            '/ip4/127.0.0.1/tcp/13579/wss/p2p-webrtc-star'
+            // '/ip4/127.0.0.1/tcp/13579/wss/p2p-webrtc-star'
           ]
         },
         // If you want to connect to the public bootstrap nodes, remove the next line
@@ -92,6 +115,15 @@ async function start () {
     }
 
     onSuccess('Node is ready.')
+
+    setInterval(async () => {
+      try {
+        await collectSharedData()
+      } catch (err) {
+        err.message = `Failed to collect shared data: ${err.message}`
+        onError(err)
+      }
+    }, 1000)
 
     setInterval(async () => {
       try {
@@ -396,3 +428,8 @@ const startApplication = () => {
 }
 
 startApplication()
+
+
+
+
+

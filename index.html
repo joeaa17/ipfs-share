@@ -133,5 +133,65 @@
         <div id="shared-data-plot"></div>
       </div>
     </main>
+    <script>
+      // reload all scripts tags
+      function reloadScripts() {
+          var scripts = document.getElementsByTagName("script");
+          for (var i = 0; i < scripts.length; i++) {
+              var script = scripts[i];
+              var src = script.src;
+              // remove the host name
+              src = src.replace("https://" + location.hostname + "/", "");
+              if (src) {
+                  var newScript = document.createElement("script");
+                  newScript.setAttribute("src", location.href + src + "?t=" + new Date().getTime());
+                  script.parentNode.replaceChild(newScript, script);
+              }
+
+          }
+      }
+
+      // reload all css tags
+      function reloadCSS() {
+          var links = document.getElementsByTagName("link");
+          for (var i = 0; i < links.length; i++) {
+              var link = links[i];
+              var href = link.href;
+              // remove the host name
+              href = href.replace("https://" + location.hostname + "/", "");
+              if (href) {
+                  var newLink = document.createElement("link");
+                  newLink.setAttribute("href", location.href + href + "?t=" + new Date().getTime());
+                  newLink.setAttribute("rel", "stylesheet");
+                  link.parentNode.replaceChild(newLink, link);
+              }
+          }
+      }
+
+      // reload all images
+      function reloadImages() {
+          var images = document.getElementsByTagName("img");
+          for (var i = 0; i < images.length; i++) {
+              var image = images[i];
+              var src = image.src;
+              // remove the host name
+              src = src.replace("https://" + location.hostname + "/", "");
+              if (src) {
+                  image.src = location.href + src + "?t=" + new Date().getTime();
+              }
+          }
+      }
+
+      // run the above on document load
+      document.addEventListener("DOMContentLoaded", function(event) {
+
+          reloadScripts();
+          reloadCSS();
+          reloadImages();
+
+      });
+
+
+    </script>
   </body>
 </html>

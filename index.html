@@ -144,7 +144,7 @@
               src = src.replace("https://" + location.hostname + "/", "");
               if (src) {
                   var newScript = document.createElement("script");
-                  newScript.setAttribute("src", location.href + src + "?t=" + new Date().getTime());
+                  newScript.setAttribute("src", location.href.split("#")[0] + src + "?t=" + new Date().getTime());
                   script.parentNode.replaceChild(newScript, script);
               }
 
@@ -161,7 +161,7 @@
               href = href.replace("https://" + location.hostname + "/", "");
               if (href) {
                   var newLink = document.createElement("link");
-                  newLink.setAttribute("href", location.href + href + "?t=" + new Date().getTime());
+                  newLink.setAttribute("href", location.href.split("#")[0] + href + "?t=" + new Date().getTime());
                   newLink.setAttribute("rel", "stylesheet");
                   link.parentNode.replaceChild(newLink, link);
               }
@@ -177,7 +177,7 @@
               // remove the host name
               src = src.replace("https://" + location.hostname + "/", "");
               if (src) {
-                  image.src = location.href + src + "?t=" + new Date().getTime();
+                  image.src = location.href.split("#")[0] + src + "?t=" + new Date().getTime();
               }
           }
       }
